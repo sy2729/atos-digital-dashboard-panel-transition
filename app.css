@@ -1,0 +1,220 @@
+/* font */
+@font-face {
+  font-family: "proxima semibold";
+  src: url('./assets/Proxima_Nova_Sbold.otf');
+}
+@font-face {
+  font-family: "proxima regular";
+  src: url('./assets/Proxima_Nova_Regular.ttf');
+}
+/* hr */
+hr{
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #ddd;
+  margin: 1em 0;
+  padding: 0;
+}
+/* input */
+input[type=text] {
+  padding: 5px; 
+  border: 1px solid #ddd; 
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+}
+
+input[type=text]:focus {
+  border-color:#0065A1;
+  outline: none;
+}
+
+input[type=submit] {
+  padding:5px 15px; 
+  background:#ccc; 
+  border:0 none;
+  cursor:pointer;
+  -webkit-border-radius: 5px;
+  border-radius: 5px; 
+}
+
+/* button */
+button {
+  padding: 9px 35px;
+  border: none;
+  border-radius: 20px;
+  background: #0065A1;
+  color: #f4f4f4;
+}
+
+/* clear style */
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+* {
+  font-family: "proxima semibold";
+}
+
+.header {
+  width: 100%;
+  border-bottom: 1px solid #eee;
+  box-shadow: 0 2px 5px 0 rgba(100, 100, 100, 0.2);
+}
+
+.header .header-top {
+  padding: 5px 20px;
+  border-bottom: 1px solid #ccc;
+}
+
+.header .header-bottom {
+  padding: 25px 20px;
+}
+.header .header-bottom > * {
+  margin: 0 10px;
+}
+
+.body {
+  height: calc(100vh - 130px);
+}
+
+/* style for aside */
+.body > aside{
+  width: 300px;
+  background: #FFFFFF;
+  box-shadow: 2px 0 5px 0 rgba(100, 100, 100, 0.2);
+}
+
+.header .header-bottom .active {
+  color: #0065A1;
+}
+
+.body aside ul {
+  width: 100%;
+}
+
+.body aside ul > li {
+  list-style: none;
+  padding: 20px 0 20px 35px;
+  font-size: 1.1em;
+}
+.body aside ul > li.active {
+  background: #DDE9F0;
+  position: relative;
+}
+
+.body aside ul > li.active::after {
+  content: '';
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 5px;
+  background: #0065A1;
+}
+
+/* style for container */
+.body main {
+  margin: 0px 60px 20px;
+  overflow-y: scroll;
+}
+
+.theme {
+  color: #0065A1;
+}
+
+/* style for stone head */
+.mile-stone-head {
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+}
+
+.each-stone img {
+  width: 100px;
+  margin-right: 20px;
+}
+
+.each-stone .stone-num {
+  font-size: 3.5em;
+  margin: 0;
+}
+
+
+.slide-up {
+  position: relative;
+  animation: slideup 2s forwards cubic-bezier(0.82, 0.04, 0, 0.9);
+}
+
+@keyframes slideup {
+  from {transform: translateY(100%); opacity: 0;}
+  to {transform: translateY(0); opacity: 1;}
+}
+
+/* style for the card view */
+.card-view {
+  position: relative;
+  background: #FFFFFF;
+  margin: 0 10px;
+}
+.card-view-tab p {
+  padding: 5px 0;
+  color: #9C9B9C;
+  border-bottom: 4px solid transparent;
+  margin-right: 30px;
+}
+.card-view-tab p.active{
+  color: #0065A1;
+  border-bottom-color: #0065A1;
+}
+
+.card-view-action button {
+  margin-left: 10px;
+}
+
+/* style for each card */
+.each-card {
+  box-sizing: border-box;
+  width: 100%;
+  box-shadow: 3px 3px 17px 0 rgba(100, 100, 100, 0.1), -3px -3px 17px 0 rgba(100, 100, 100, 0.1);
+  margin: 20px 0;
+  border-radius: 10px;
+}
+
+.each-card .card-progress {
+  padding: 10px 20px;
+}
+.each-card .card-progress .progress-num {
+  text-align: center;
+  font-size: 2em;
+}
+.each-card .card-progress .card-action {
+  text-align: center;
+}
+.each-card .card-progress .card-action i{
+  color: #0065A1;
+  margin: 0 5px;
+}
+
+.each-card .card-info {
+  padding: 10px 10px 10px 30px;
+  position: relative;
+}
+.each-card .card-info .each-info{
+  min-width: 25%;
+  position: relative;
+}
+.each-card .card-info .each-info .info-title{
+  text-transform: capitalize;
+  font-family: 'proxima regular';
+}
+
+.each-card .card-info .card-progress-background {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 0%;
+  transition: all 4s;
+}
