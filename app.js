@@ -183,7 +183,7 @@ let initCardData = [
     id: 4,
   },
 ]
-let cardData = typeof JSON.parse(localStorage.getItem('cards')) === 'object' && JSON.parse(localStorage.getItem('cards')).length > 0 ? JSON.parse(localStorage.getItem('cards')) : initCardData;
+let cardData = typeof JSON.parse(localStorage.getItem('cards')) === 'object' && JSON.parse(localStorage.getItem('cards')) !== null && JSON.parse(localStorage.getItem('cards')).length > 0 ? JSON.parse(localStorage.getItem('cards')) : initCardData;
 let cardEls = [];
 
 let stoneHead = $('.mile-stone-head')[0];
