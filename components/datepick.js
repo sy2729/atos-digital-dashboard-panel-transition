@@ -1,25 +1,35 @@
 var newCardData = {};
-export function datePicker (callback) {
+export function datePicker (state, callback) {
+  if(state === 'add') {
     initPicker('datepicker-start-date', 'start date')
     initPicker('datepicker-target-date', 'target date')
     initPicker('datepicker-complete-date', 'complete date')
+    // submit the data
+    $('.card-form .submit').on('click', (e)=> {
+      e.preventDefault();
+      newCardData.milestone = $('#milestone')[0].value;
+      if(newCardData.milestone && newCardData['start date'] && newCardData['target date']) {
+        newCardData.id = createRandomId(10);
+        callback(JSON.parse(JSON.stringify(newCardData)));
+        // clear the form
+        $('.card-form input').val("");
+        // clear data set
+        newCardData = {};
+      }else {
+        throw new Error('not qualified')
+      }
 
-  // submit the data
-  $('.card-form .submit').on('click', (e)=> {
-    e.preventDefault();
-    newCardData.milestone = $('#milestone')[0].value;
-    if(newCardData.milestone && newCardData['start date'] && newCardData['target date']) {
-      newCardData.id = createRandomId(10);
-      callback(JSON.parse(JSON.stringify(newCardData)));
-      // clear the form
-      $('.card-form input').val("");
-      // clear data set
-      newCardData = {};
-    }else {
-      throw new Error('not qualified')
-    }
+    })
+  }else if (state === 'update') {
+    initPicker('datepicker-start-date-update', 'start date')
+    initPicker('datepicker-target-date-update', 'target date')
+    initPicker('datepicker-complete-date-update', 'complete date')
 
-  })
+    
+  }
+}
+
+
 
 
 
@@ -61,4 +71,3 @@ export function datePicker (callback) {
     };
     return result;
   }
-}

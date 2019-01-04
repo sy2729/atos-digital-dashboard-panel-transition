@@ -41,6 +41,7 @@ class CardBody {
   constructor(cardInfo){
     this.cardInfo = cardInfo;
     this.progress = cardInfo.progress ? cardInfo.progress : 0;
+    this.cardInfoArray = ['milestone', 'start date', 'target date', 'complete date'];
   }
 
   assignColor(){
@@ -52,11 +53,10 @@ class CardBody {
     var cardAction = $('<div></div>').addClass('card-action').append($('<i></i>').addClass('fas fa-edit')).append($('<i></i>').addClass('fas fa-trash-alt'));
     var cardProgress = $('<div></div>').addClass('card-progress').append(progressNum).append(cardAction)
     var cardInfo = $('<div></div>').addClass('card-info flex align-center flex-auto');
-    var cardInfoArray = ['milestone', 'start date', 'target date', 'complete date'];
     // add the progress background
     cardInfo.append($('<div></div>').addClass('card-progress-background'));
     // add each info into the left info panel
-    cardInfoArray.forEach((i)=> {
+    this.cardInfoArray.forEach((i)=> {
       if(this.cardInfo[i]) {
         var el = $("<div></div>").addClass('each-info').append($('<p></p>').addClass('info-title').text(i)).append($('<p></p>').addClass('info-content').text(this.cardInfo[i]));
         cardInfo.append(el);
@@ -77,7 +77,19 @@ class CardBody {
   eventListener(){
     // edit
     this.$node.find('.fa-edit').on('click', ()=> {
-      console.log(1)
+      console.log("function in development")
+      $('.form-update').addClass('active');
+      console.log(this.cardInfoArray)
+      // fill in the data info
+      this.cardInfoArray.forEach((i)=> {  
+        if(this.cardInfo[i]) {
+          console.log($("[data-id=" + "'" + i + "']"))
+          $("[data-id=" + "'" + i + "']")[0].value = this.cardInfo[i];
+        };
+      })
+      // fill in the progress
+      $('.progress-label input').val(this.progress)
+      $('.progress-label span').text(this.progress)
     })
 
     // remove
@@ -171,11 +183,11 @@ cardData.forEach((i, index)=> {
 
 // add-new-data button
 $('.addNew').on('click',()=> {
-  $('.card-form').addClass('active')
+  $('.form-add').addClass('active')
 })
 
 // initialize the datePicker library
-datePicker((newCardInfo)=> {
+datePicker('add',(newCardInfo)=> {
   newCardInfo.progress = 0;
   let newCard = new CardBody(newCardInfo);
   newCard.append(cardBody)
@@ -186,6 +198,20 @@ datePicker((newCardInfo)=> {
     scrollTop: $(".each-card:last-child").position().top
   }, 1000);
 });
+
+datePicker('update',(newCardInfo)=> {
+  console.log(1111)
+  // newCardInfo.progress = 0;
+  // let newCard = new CardBody(newCardInfo);
+  // newCard.append(cardBody)
+  // // close the form
+  // $('.card-form').removeClass('active');
+  // // scroll to the container bottom
+  // $(".body main").animate({
+  //   scrollTop: $(".each-card:last-child").position().top
+  // }, 1000);
+});
+
 
 // cancel-add-date button
 $('.cancel').on('click', (e)=> {

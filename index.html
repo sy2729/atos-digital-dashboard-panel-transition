@@ -63,7 +63,7 @@
     </main>
   </section>
 
-  <form action="" class="card-form">
+  <form action="" class="card-form form-add">
     <h2 style="text-align:center;">Add New Milestone</h2>
     <label>
       MileStone
@@ -82,6 +82,32 @@
     <label>
       Complete Date
       <input type="text" id="datepicker-complete-date">
+    </label>
+
+    <button class="submit">OK</button>
+    <button class="cancel">Cancel</button>
+  </form>
+  <form action="" class="card-form form-update">
+    <h2 style="text-align:center;">Update New Milestone</h2>
+    <label>
+      MileStone
+      <input type="text" placeholder="Fill in the name" id="milestone-update" data-id="milestone">
+    </label>
+    <label>
+      Start Date
+      <input type="text" id="datepicker-start-date-update" data-id="start date">
+    </label>
+    <label>
+      Target Date
+      <input type="text" id="datepicker-target-date-update" data-id="target date">
+    </label>
+    <label>
+      Complete Date
+      <input type="text" id="datepicker-complete-date-update" data-id="complete date">
+    </label>
+    <label class="progress-label">
+        <input type="range" min="0" max="100" value="0">
+        <span class="progress-value">0</span>
     </label>
 
     <button class="submit">OK</button>
