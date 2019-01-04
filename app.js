@@ -92,7 +92,6 @@ class CardBody {
   eventListener(){
     // edit
     this.$node.find('.fa-edit').on('click', ()=> {
-      console.log("function in development")
       $('.form-update').addClass('active');
       // fill in the data info
       this.cardInfoArray.forEach((i)=> {  
@@ -122,6 +121,8 @@ class CardBody {
     cardData  = cardData.filter((i)=> {
       return i.id !== this.cardInfo.id
     });
+    // update local storage
+    updateLocalStorage('cards', cardData);
   }
 }
 let stoneData = [
@@ -146,7 +147,8 @@ let stoneData = [
     title: 'Unsolved Support'
   },
 ];
-let cardData = [
+
+let initCardData = [
   {
     // name: 'xxxxx',
     "milestone": "Project Scope Definition",
@@ -181,7 +183,7 @@ let cardData = [
     id: 4,
   },
 ]
-
+let cardData = typeof JSON.parse(localStorage.getItem('cards')) === 'object' && JSON.parse(localStorage.getItem('cards')).length > 0 ? JSON.parse(localStorage.getItem('cards')) : initCardData;
 let cardEls = [];
 
 let stoneHead = $('.mile-stone-head')[0];
@@ -210,6 +212,11 @@ $('.addNew').on('click',()=> {
 datePicker.datePicker('add',(newCardInfo)=> {
   newCardInfo.progress = 0;
   let newCard = new CardBody(newCardInfo);
+  // add card info to card info
+  cardData.push(newCardInfo);
+  // add card to cardsEl
+  cardEls.push(newCard);
+  // append card to page
   newCard.append(cardBody)
   // close the form
   $('.card-form').removeClass('active');
@@ -217,10 +224,13 @@ datePicker.datePicker('add',(newCardInfo)=> {
   $(".body main").animate({
     scrollTop: $(".each-card:last-child").position().top
   }, 1000);
+
+  // update local storage
+  updateLocalStorage('cards', cardData);
 });
 
 datePicker.datePicker('update',(updatedCardInfo)=> {
-  // refii the data
+  // refill the data
   cardData.forEach((i)=> {
     if(i.id === currentUpdateId) {
       i = updatedCardInfo
@@ -232,6 +242,9 @@ datePicker.datePicker('update',(updatedCardInfo)=> {
   })
   currentCard.updateCard(updatedCardInfo);
   $('.form-update').removeClass('active');
+
+  // update local storage
+  updateLocalStorage('cards', cardData);
 });
 
 
@@ -242,3 +255,6 @@ $('.cancel').on('click', (e)=> {
 })
 
 
+function updateLocalStorage(key, value){
+  localStorage.setItem(key, JSON.stringify(value));
+}
