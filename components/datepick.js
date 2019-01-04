@@ -1,23 +1,20 @@
-var loadingResult = loadingState();
+var newCardData = {};
 export function datePicker (callback) {
-  var newCardData = {};
-  if(loadingResult()) {
     initPicker('datepicker-start-date', 'start date')
     initPicker('datepicker-target-date', 'target date')
     initPicker('datepicker-complete-date', 'complete date')
-    changeLoadingState()
-  }
 
   // submit the data
-  $('.card-form .submit').one('click', (e)=> {
+  $('.card-form .submit').on('click', (e)=> {
     e.preventDefault();
     newCardData.milestone = $('#milestone')[0].value;
-    console.log(newCardData)
     if(newCardData.milestone && newCardData['start date'] && newCardData['target date']) {
       newCardData.id = createRandomId(10);
-      callback(newCardData);
+      callback(JSON.parse(JSON.stringify(newCardData)));
       // clear the form
       $('.card-form input').val("");
+      // clear data set
+      newCardData = {};
     }else {
       throw new Error('not qualified')
     }
@@ -32,14 +29,14 @@ export function datePicker (callback) {
   function initPicker(id, key) {
     var picker = new Pikaday({
       field: document.getElementById(id),
-      format: 'D/M/YYYY',
+      format: 'M/D/YYYY',
       toString(date, format) {
         // you should do formatting based on the passed format,
         // but we will just return 'D/M/YYYY' for simplicity
         const day = date.getDate();
         const month = date.getMonth() + 1;
         const year = date.getFullYear();
-        return `${day}/${month}/${year}`;
+        return `${month}/${day}/${year}`;
       },
       parse(dateString, format) {
           // dateString is the result of `toString` method
@@ -64,18 +61,4 @@ export function datePicker (callback) {
     };
     return result;
   }
-}
-
-
-// loading state
-var changeLoadingState
-function loadingState (){
-  var firstLoading = true;
-  function getState() {
-    return firstLoading
-  };
-  changeLoadingState = function() {
-    firstLoading = false
-  };
-  return getState
 }

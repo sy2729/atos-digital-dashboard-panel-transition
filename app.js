@@ -169,22 +169,25 @@ cardData.forEach((i, index)=> {
 })
 
 
-// add new data
+// add-new-data button
 $('.addNew').on('click',()=> {
   $('.card-form').addClass('active')
-  datePicker((newCardInfo)=> {
-    newCardInfo.progress = 0;
-    let newCard = new CardBody(newCardInfo);
-    newCard.append(cardBody)
-    // close the form
-    $('.card-form').removeClass('active');
-    // scroll to the container bottom
-    $(".body main").animate({
-      scrollTop: $(".each-card:last-child").position().top
-    }, 1000);
-  });
 })
-// cancel add date
+
+// initialize the datePicker library
+datePicker((newCardInfo)=> {
+  newCardInfo.progress = 0;
+  let newCard = new CardBody(newCardInfo);
+  newCard.append(cardBody)
+  // close the form
+  $('.card-form').removeClass('active');
+  // scroll to the container bottom
+  $(".body main").animate({
+    scrollTop: $(".each-card:last-child").position().top
+  }, 1000);
+});
+
+// cancel-add-date button
 $('.cancel').on('click', (e)=> {
   e.preventDefault();
   $('.card-form').removeClass('active');
