@@ -1,5 +1,5 @@
-import {datePicker} from './components/datepick.js';
-
+import datePicker from './components/datepick.js';
+var currentUpdateId;
 class StoneHead {
   constructor(src, num, title) {
     this.src = src;
@@ -58,7 +58,7 @@ class CardBody {
     // add each info into the left info panel
     this.cardInfoArray.forEach((i)=> {
       if(this.cardInfo[i]) {
-        var el = $("<div></div>").addClass('each-info').append($('<p></p>').addClass('info-title').text(i)).append($('<p></p>').addClass('info-content').text(this.cardInfo[i]));
+        var el = $("<div></div>").attr('data-id', i).addClass('each-info').append($('<p></p>').addClass('info-title').text(i)).append($('<p></p>').addClass('info-content').text(this.cardInfo[i]));
         cardInfo.append(el);
       }
     })
@@ -74,22 +74,39 @@ class CardBody {
     // listen event
     this.eventListener();
   }
+  updateCard(cardInfo){
+    // update the card info - model
+    this.cardInfo = cardInfo;
+    this.progress = cardInfo.progress ? cardInfo.progress : 0;
+    // update the card info - view
+    this.cardInfoArray.forEach((i)=> {
+      if(this.cardInfo[i]) {
+        var $eachInfo = this.$node.find(`[data-id='${i}']`);
+        $eachInfo.find('.info-content').text(this.cardInfo[i])
+      }
+    });
+    //update the progress
+    this.$node.find('.card-progress-background').css({'width': `${this.progress}%`})
+    this.$node.find('.progress-num').text(`${this.progress}%`)
+  }
   eventListener(){
     // edit
     this.$node.find('.fa-edit').on('click', ()=> {
       console.log("function in development")
       $('.form-update').addClass('active');
-      console.log(this.cardInfoArray)
       // fill in the data info
       this.cardInfoArray.forEach((i)=> {  
         if(this.cardInfo[i]) {
-          console.log($("[data-id=" + "'" + i + "']"))
-          $("[data-id=" + "'" + i + "']")[0].value = this.cardInfo[i];
+          $("input[data-id=" + "'" + i + "']")[0].value = this.cardInfo[i];
         };
       })
       // fill in the progress
       $('.progress-label input').val(this.progress)
       $('.progress-label span').text(this.progress)
+
+      // fill in the data model
+      datePicker.fillInData(this.cardInfo);
+      currentUpdateId = this.cardInfo.id;
     })
 
     // remove
@@ -165,6 +182,8 @@ let cardData = [
   },
 ]
 
+let cardEls = [];
+
 let stoneHead = $('.mile-stone-head')[0];
 stoneData.forEach((i)=> {
   let stone = new StoneHead(i.url, i.num, i.title);
@@ -174,6 +193,7 @@ stoneData.forEach((i)=> {
 let cardBody = $('.card-view-body')[0];
 cardData.forEach((i, index)=> {
   let card = new CardBody(i);
+  cardEls.push(card);
   var interval = 200;
   setTimeout(()=> {
     card.append(cardBody);
@@ -187,7 +207,7 @@ $('.addNew').on('click',()=> {
 })
 
 // initialize the datePicker library
-datePicker('add',(newCardInfo)=> {
+datePicker.datePicker('add',(newCardInfo)=> {
   newCardInfo.progress = 0;
   let newCard = new CardBody(newCardInfo);
   newCard.append(cardBody)
@@ -199,17 +219,19 @@ datePicker('add',(newCardInfo)=> {
   }, 1000);
 });
 
-datePicker('update',(newCardInfo)=> {
-  console.log(1111)
-  // newCardInfo.progress = 0;
-  // let newCard = new CardBody(newCardInfo);
-  // newCard.append(cardBody)
-  // // close the form
-  // $('.card-form').removeClass('active');
-  // // scroll to the container bottom
-  // $(".body main").animate({
-  //   scrollTop: $(".each-card:last-child").position().top
-  // }, 1000);
+datePicker.datePicker('update',(updatedCardInfo)=> {
+  // refii the data
+  cardData.forEach((i)=> {
+    if(i.id === currentUpdateId) {
+      i = updatedCardInfo
+    }
+  })
+  // console.log(cardEls)
+  var currentCard = cardEls.find((i)=> {
+    return i.cardInfo.id === currentUpdateId
+  })
+  currentCard.updateCard(updatedCardInfo);
+  $('.form-update').removeClass('active');
 });
 
 

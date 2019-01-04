@@ -1,11 +1,11 @@
 var newCardData = {};
-export function datePicker (state, callback) {
+function datePicker (state, callback) {
   if(state === 'add') {
     initPicker('datepicker-start-date', 'start date')
     initPicker('datepicker-target-date', 'target date')
     initPicker('datepicker-complete-date', 'complete date')
     // submit the data
-    $('.card-form .submit').on('click', (e)=> {
+    $('.form-add .submit').on('click', (e)=> {
       e.preventDefault();
       newCardData.milestone = $('#milestone')[0].value;
       if(newCardData.milestone && newCardData['start date'] && newCardData['target date']) {
@@ -21,11 +21,33 @@ export function datePicker (state, callback) {
 
     })
   }else if (state === 'update') {
+
     initPicker('datepicker-start-date-update', 'start date')
     initPicker('datepicker-target-date-update', 'target date')
     initPicker('datepicker-complete-date-update', 'complete date')
 
-    
+    // listen on the range input bar
+    var $progressValue = $('.progress-value');
+    $('.progress-label input').on('change', function(){
+      $progressValue.text(this.value);
+      newCardData.progress = this.value
+    });
+
+    // submit the data
+    $('.form-update .submit').on('click', (e)=> {
+      e.preventDefault();
+      newCardData.milestone = $('#milestone-update')[0].value;
+      if(newCardData.milestone && newCardData['start date'] && newCardData['target date']) {
+        callback(JSON.parse(JSON.stringify(newCardData)));
+        // clear the form
+        $('.card-form input').val("");
+        // clear data set
+        newCardData = {};
+      }else {
+        throw new Error('not qualified')
+      }
+    })
+
   }
 }
 
@@ -70,4 +92,14 @@ export function datePicker (state, callback) {
       result += all[index];
     };
     return result;
+  }
+
+  function fillInData(data){
+    newCardData = data;
+  }
+
+
+  export default {
+    datePicker,
+    fillInData
   }
