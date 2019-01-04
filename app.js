@@ -1,3 +1,5 @@
+import {datePicker} from './components/datepick.js';
+
 class StoneHead {
   constructor(src, num, title) {
     this.src = src;
@@ -60,13 +62,37 @@ class CardBody {
         cardInfo.append(el);
       }
     })
-    this.node = $('<div></div>').addClass('each-card flex slide-up').append(cardInfo).append(cardProgress)[0];
+    this.$node = $('<div></div>').addClass('each-card flex slide-up').append(cardInfo).append(cardProgress)
+    this.node = this.$node[0];
   }
   append(node){
     this.generate();
     this.assignColor();
     node.appendChild(this.node);
-    $(this.node).find('.card-progress-background').css({'background': this.color, 'width': `${this.progress}%`})
+    this.$node.find('.card-progress-background').css({'background': this.color, 'width': `${this.progress}%`})
+
+    // listen event
+    this.eventListener();
+  }
+  eventListener(){
+    // edit
+    this.$node.find('.fa-edit').on('click', ()=> {
+      console.log(1)
+    })
+
+    // remove
+    this.$node.find('.fa-trash-alt').on('click',()=> {
+      this.$node.addClass('removed').on('animationend', ()=> {
+        this.$node.remove();
+      })
+      // remove the date from the data model;
+      this.remove();
+    })
+  }
+  remove() {
+    cardData  = cardData.filter((i)=> {
+      return i.id !== this.cardInfo.id
+    });
   }
 }
 let stoneData = [
@@ -98,28 +124,32 @@ let cardData = [
     "start date": "12/03/2018",
     "target date": "12/03/2018",
     "complete date": "12/03/2018",
-    progress: 100
+    progress: 100,
+    id: 1,
   },
   {
     name: 'xxxxx',
     "milestone": "Project Scope Definition",
     "start date": "12/03/2018",
     "target date": "12/03/2018",
-    progress: 45
+    progress: 45,
+    id: 2,
   },
   {
     name: 'xxxxx',
     "milestone": "Project Scope Definition",
     "start date": "12/03/2018",
     "target date": "12/03/2018",
-    progress: 65
+    progress: 65,
+    id: 3,
   },
   {
     name: 'xxxxx',
     "milestone": "Project Scope Definition",
     "start date": "12/03/2018",
     "target date": "12/03/2018",
-    progress: 75
+    progress: 75,
+    id: 4,
   },
 ]
 
@@ -133,8 +163,31 @@ let cardBody = $('.card-view-body')[0];
 cardData.forEach((i, index)=> {
   let card = new CardBody(i);
   var interval = 200;
-  console.log(index * interval)
   setTimeout(()=> {
     card.append(cardBody);
   }, index * interval)
 })
+
+
+// add new data
+$('.addNew').on('click',()=> {
+  $('.card-form').addClass('active')
+  datePicker((newCardInfo)=> {
+    newCardInfo.progress = 0;
+    let newCard = new CardBody(newCardInfo);
+    newCard.append(cardBody)
+    // close the form
+    $('.card-form').removeClass('active');
+    // scroll to the container bottom
+    $(".body main").animate({
+      scrollTop: $(".each-card:last-child").position().top
+    }, 1000);
+  });
+})
+// cancel add date
+$('.cancel').on('click', (e)=> {
+  e.preventDefault();
+  $('.card-form').removeClass('active');
+})
+
+

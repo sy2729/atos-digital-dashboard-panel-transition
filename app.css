@@ -1,3 +1,6 @@
+/* import datepick css */
+@import "./css/input-form.css";
+
 /* font */
 @font-face {
   font-family: "proxima semibold";
@@ -88,6 +91,18 @@ ul {
 
 .header .header-bottom .active {
   color: #0065A1;
+  position: relative;
+}
+.header .header-bottom .active::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -10px;
+  width: 5px;
+  height: 5px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: #0065A1;
 }
 
 .body aside ul {
@@ -182,6 +197,14 @@ ul {
   border-radius: 10px;
 }
 
+.each-card.removed {
+  animation: remove 1s ease-out;
+}
+@keyframes remove {
+  from {transform: translateY(0); opacity: 1;}
+  to {transform: translateY(-100%); opacity: 0;}
+}
+
 .each-card .card-progress {
   padding: 10px 20px;
 }
@@ -218,3 +241,5 @@ ul {
   width: 0%;
   transition: all 4s;
 }
+
+

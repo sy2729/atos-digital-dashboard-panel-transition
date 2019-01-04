@@ -10,13 +10,14 @@
   <link rel="stylesheet" href="./common.css">
   <link rel="stylesheet" href="./app.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/pikaday/css/pikaday.css">
 </head>
 <body>
   <div class="header">
     <nav class="header-top flex justify-space-between align-center">
-      <p>BACK</p>
+      <p><i class="fas fa-angle-left"></i> BACK</p>
       <div>
-        <div class="circle"></div>
+        <i class="fas fa-user-circle"></i>
         <span>Jingshan</span>
       </div>
     </nav>
@@ -62,8 +63,34 @@
     </main>
   </section>
 
+  <form action="" class="card-form">
+    <h2 style="text-align:center;">Add New Milestone</h2>
+    <label>
+      MileStone
+      <input type="text" placeholder="Fill in the name" id="milestone">
+    </label>
+    <label>
+      Start Date
+      <input type="text" id="datepicker-start-date">
+    </label>
+
+    <label>
+      Target Date
+      <input type="text" id="datepicker-target-date">
+    </label>
+
+    <label>
+      Complete Date
+      <input type="text" id="datepicker-complete-date">
+    </label>
+
+    <button class="submit">OK</button>
+    <button class="cancel">Cancel</button>
+  </form>
+
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
-  <script src="./app.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pikaday/pikaday.js"></script>
+  <script type="module" src="./app.js"></script>
 </body>
 </html>
